@@ -95,7 +95,7 @@ for crate in "${crates[@]}"; do
     continue
   fi
 
-  cmd="cargo +stable build -p $crate --target wasm32-wasip1 --no-default-features"
+  cmd="cargo wasix build -p $crate --no-default-features"
 
   if [ -n "$CI" ]; then
     echo "::group::$cmd"

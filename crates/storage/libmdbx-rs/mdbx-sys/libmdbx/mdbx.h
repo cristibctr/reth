@@ -1966,7 +1966,8 @@ enum MDBX_error_t {
   MDBX_EPERM = EPERM,
   MDBX_EINTR = EINTR,
   MDBX_ENOFILE = ENOENT,
-  MDBX_EREMOTE = ENOTBLK
+  //incorrect ENOTBLK but idk what to do anymore
+  MDBX_EREMOTE = 15
 #endif /* !Windows */
 };
 #ifndef __cplusplus

@@ -11,7 +11,6 @@ mod clear;
 mod diff;
 mod get;
 mod list;
-mod stats;
 /// DB List TUI
 mod tui;
 
@@ -28,8 +27,6 @@ pub struct Command<C: ChainSpecParser> {
 #[derive(Subcommand, Debug)]
 /// `reth db` subcommands
 pub enum Subcommands {
-    /// Lists all the tables, their entry count and their size
-    Stats(stats::Command),
     /// Lists the contents of a table
     List(list::Command),
     /// Calculates the content checksum of a table
@@ -80,12 +77,6 @@ impl<C: ChainSpecParser<ChainSpec: EthChainSpec + EthereumHardforks>> Command<C>
         eyre::ensure!(db_path.is_dir(), "Database does not exist: {:?}", db_path);
 
         match self.command {
-            // TODO: We'll need to add this on the DB trait.
-            Subcommands::Stats(command) => {
-                db_ro_exec!(self.env, tool, N, {
-                    command.execute(data_dir, &tool)?;
-                });
-            }
             Subcommands::List(command) => {
                 db_ro_exec!(self.env, tool, N, {
                     command.execute(&tool)?;

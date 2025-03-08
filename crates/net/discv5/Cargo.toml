@@ -43,3 +43,6 @@ metrics.workspace = true
 reth-tracing.workspace = true
 tokio = { workspace = true, features = ["rt-multi-thread"] }
 secp256k1 = { workspace = true, features = ["rand-std"] }
+
+[patch.crates-io]
+discv5 = { git = "https://github.com/cristibctr/discv5", branch = "master" }

@@ -12,6 +12,8 @@ fn main() {
     let bindings = PathBuf::from(std::env::var("OUT_DIR").unwrap()).join("bindings.rs");
     generate_bindings(&mdbx, &bindings);
 
+    //TODO: Re-enable the build after libmdbx has wasm support - MAJOR ISSUE
+    /*
     let mut cc = cc::Build::new();
     cc.flag_if_supported("-Wno-unused-parameter").flag_if_supported("-Wuninitialized");
 
@@ -37,8 +39,15 @@ fn main() {
     {
         cc.flag("-march=native");
     }
+    // Explicitly set compiler
+    let wasi_sdk_path = "/home/x33f3/wasi-sdk-25.0-x86_64-linux";
+    let clang_path = format!("{}/bin/clang", wasi_sdk_path);
+    cc.compiler(clang_path);
 
+    // Pass sysroot and target
+    cc.flag(&format!("--sysroot={}/share/wasi-sysroot", wasi_sdk_path));
     cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
+    */
 }
 
 fn generate_bindings(mdbx: &Path, out_file: &Path) {
@@ -106,6 +115,7 @@ fn generate_bindings(mdbx: &Path, out_file: &Path) {
         .prepend_enum_name(false)
         .generate_comments(false)
         .formatter(Formatter::Rustfmt)
+        .clang_arg("--sysroot=/home/x33f3/wasi-sdk-25.0-x86_64-linux/share/wasi-sysroot")
         .generate()
         .expect("Unable to generate bindings");
     bindings.write_to_file(out_file).expect("Couldn't write bindings!");

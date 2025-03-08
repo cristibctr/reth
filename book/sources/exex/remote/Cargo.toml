@@ -14,7 +14,7 @@ reth-node-api = { git = "https://github.com/paradigmxyz/reth.git" }
 reth-tracing = { git = "https://github.com/paradigmxyz/reth.git" }
 
 # async
-tokio = { version = "1", features = ["full"] }
+tokio = { version = "=1.41.1", default-features = false, features = ["sync","macros","io-util","rt","time"] }
 tokio-stream = "0.1"
 futures-util = "0.3"
 
@@ -52,3 +52,6 @@ path = "src/exex.rs"
 [[bin]]
 name = "consumer"
 path = "src/consumer.rs"
+
+[patch.crates-io]
+tokio = { path = "../tokio/tokio", version = "1.41.1"}
