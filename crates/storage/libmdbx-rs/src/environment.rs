@@ -690,7 +690,7 @@ impl EnvironmentBuilder {
                     ))?;
                 }
 
-                #[cfg(unix)]
+                #[cfg(any(unix, target_vendor = "wasmer"))]
                 fn path_to_bytes<P: AsRef<Path>>(path: P) -> Vec<u8> {
                     use std::os::unix::ffi::OsStrExt;
                     path.as_ref().as_os_str().as_bytes().to_vec()

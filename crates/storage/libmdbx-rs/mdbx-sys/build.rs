@@ -12,42 +12,39 @@ fn main() {
     let bindings = PathBuf::from(std::env::var("OUT_DIR").unwrap()).join("bindings.rs");
     generate_bindings(&mdbx, &bindings);
 
-    //TODO: Re-enable the build after libmdbx has wasm support - MAJOR ISSUE
-    /*
-    let mut cc = cc::Build::new();
-    cc.flag_if_supported("-Wno-unused-parameter").flag_if_supported("-Wuninitialized");
+    // let mut cc = cc::Build::new();
+    // cc.flag_if_supported("-Wno-unused-parameter").flag_if_supported("-Wuninitialized");
+    //
+    // if env::var("CARGO_CFG_TARGET_OS").unwrap() != "linux" {
+    //     cc.flag_if_supported("-Wbad-function-cast");
+    // }
+    //
+    // let flags = format!("{:?}", cc.get_compiler().cflags_env());
+    // cc.define("MDBX_BUILD_FLAGS", flags.as_str()).define("MDBX_TXN_CHECKOWNER", "0");
+    //
+    // // Enable debugging on debug builds
+    // #[cfg(debug_assertions)]
+    // cc.define("MDBX_DEBUG", "1").define("MDBX_ENABLE_PROFGC", "1");
+    //
+    // // Disables debug logging on optimized builds
+    // #[cfg(not(debug_assertions))]
+    // cc.define("MDBX_DEBUG", "0").define("NDEBUG", None);
+    //
+    // // Propagate `-C target-cpu=native`
+    // let rustflags = env::var("CARGO_ENCODED_RUSTFLAGS").unwrap();
+    // if rustflags.contains("target-cpu=native") &&
+    //     env::var("CARGO_CFG_TARGET_ENV").unwrap() != "msvc"
+    // {
+    //     cc.flag("-march=native");
+    // }
+    //
+    // cc.flag("-D_WASI_EMULATED_MMAN");
+    // cc.flag("-D_WASI_EMULATED_PROCESS_CLOCKS");
+    // cc.flag("-D__linux__");
+    // cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
+    // println!("cargo:rustc-link-lib=wasi-emulated-mman");
+    // println!("cargo:rustc-link-lib=wasi-emulated-process-clocks");
 
-    if env::var("CARGO_CFG_TARGET_OS").unwrap() != "linux" {
-        cc.flag_if_supported("-Wbad-function-cast");
-    }
-
-    let flags = format!("{:?}", cc.get_compiler().cflags_env());
-    cc.define("MDBX_BUILD_FLAGS", flags.as_str()).define("MDBX_TXN_CHECKOWNER", "0");
-
-    // Enable debugging on debug builds
-    #[cfg(debug_assertions)]
-    cc.define("MDBX_DEBUG", "1").define("MDBX_ENABLE_PROFGC", "1");
-
-    // Disables debug logging on optimized builds
-    #[cfg(not(debug_assertions))]
-    cc.define("MDBX_DEBUG", "0").define("NDEBUG", None);
-
-    // Propagate `-C target-cpu=native`
-    let rustflags = env::var("CARGO_ENCODED_RUSTFLAGS").unwrap();
-    if rustflags.contains("target-cpu=native") &&
-        env::var("CARGO_CFG_TARGET_ENV").unwrap() != "msvc"
-    {
-        cc.flag("-march=native");
-    }
-    // Explicitly set compiler
-    let wasi_sdk_path = "/home/x33f3/wasi-sdk-25.0-x86_64-linux";
-    let clang_path = format!("{}/bin/clang", wasi_sdk_path);
-    cc.compiler(clang_path);
-
-    // Pass sysroot and target
-    cc.flag(&format!("--sysroot={}/share/wasi-sysroot", wasi_sdk_path));
-    cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
-    */
 }
 
 fn generate_bindings(mdbx: &Path, out_file: &Path) {
@@ -115,7 +112,8 @@ fn generate_bindings(mdbx: &Path, out_file: &Path) {
         .prepend_enum_name(false)
         .generate_comments(false)
         .formatter(Formatter::Rustfmt)
-        .clang_arg("--sysroot=/home/x33f3/wasi-sdk-25.0-x86_64-linux/share/wasi-sysroot")
+        .clang_arg("--sysroot=/home/x33f3/wasix-sysroot2025")
+        .clang_arg("-DLIBMDBX_EXPORTS")
         .generate()
         .expect("Unable to generate bindings");
     bindings.write_to_file(out_file).expect("Couldn't write bindings!");
