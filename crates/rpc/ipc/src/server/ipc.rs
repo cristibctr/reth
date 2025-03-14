@@ -69,7 +69,7 @@ where
             .collect();
 
         while let Some(response) = pending_calls.next().await {
-            if let Err(too_large) = batch_response.append(&response) {
+            if let Err(too_large) = batch_response.append(response) {
                 return Some(too_large.to_result())
             }
         }

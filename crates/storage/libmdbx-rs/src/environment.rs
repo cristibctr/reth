@@ -595,7 +595,7 @@ pub struct EnvironmentBuilder {
     txn_dp_limit: Option<u64>,
     spill_max_denominator: Option<u64>,
     spill_min_denominator: Option<u64>,
-    geometry: Option<Geometry<(Option<usize>, Option<usize>)>>,
+    geometry: Option<Geometry<(Option<u64>, Option<u64>)>>,
     log_level: Option<ffi::MDBX_log_level_t>,
     kind: EnvironmentKind,
     handle_slow_readers: Option<HandleSlowReadersCallback>,
@@ -847,8 +847,8 @@ impl EnvironmentBuilder {
 
     /// Set all size-related parameters of environment, including page size and the min/max size of
     /// the memory map.
-    pub fn set_geometry<R: RangeBounds<usize>>(&mut self, geometry: Geometry<R>) -> &mut Self {
-        let convert_bound = |bound: Bound<&usize>| match bound {
+    pub fn set_geometry<R: RangeBounds<u64>>(&mut self, geometry: Geometry<R>) -> &mut Self {
+        let convert_bound = |bound: Bound<&u64>| match bound {
             Bound::Included(v) | Bound::Excluded(v) => Some(*v),
             _ => None,
         };
@@ -947,7 +947,7 @@ mod tests {
 
         let tempdir = tempfile::tempdir().unwrap();
         let env = Environment::builder()
-            .set_geometry(Geometry::<RangeInclusive<usize>> {
+            .set_geometry(Geometry::<RangeInclusive<u64>> {
                 size: Some(0..=1024 * 1024), // Max 1MB, so we can hit the limit
                 page_size: Some(PageSize::MinimalAcceptable), // To create as many pages as possible
                 ..Default::default()

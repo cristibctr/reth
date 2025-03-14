@@ -101,9 +101,9 @@ impl TypedValueParser for LogLevelValueParser {
 
 /// Size in bytes.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
-pub struct ByteSize(pub usize);
+pub struct ByteSize(pub u64);
 
-impl From<ByteSize> for usize {
+impl From<ByteSize> for u64 {
     fn from(s: ByteSize) -> Self {
         s.0
     }
@@ -130,7 +130,7 @@ impl FromStr for ByteSize {
 
         let num: usize = num_str.parse().map_err(|_| "Invalid number".to_string())?;
 
-        let multiplier = match unit {
+        let multiplier: u64 = match unit {
             "B" | "" => 1, // Assume bytes if no unit is specified
             "KB" => 1024,
             "MB" => 1024 * 1024,
@@ -139,16 +139,16 @@ impl FromStr for ByteSize {
             _ => return Err(format!("Invalid unit: {}. Use B, KB, MB, GB, or TB.", unit)),
         };
 
-        Ok(Self(num * multiplier))
+        Ok(Self(num as u64 * multiplier))
     }
 }
 
 impl fmt::Display for ByteSize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        const KB: usize = 1024;
-        const MB: usize = KB * 1024;
-        const GB: usize = MB * 1024;
-        const TB: usize = GB * 1024;
+        const KB: u64 = 1024;
+        const MB: u64 = KB * 1024;
+        const GB: u64 = MB * 1024;
+        const TB: u64 = GB * 1024;
 
         let (size, unit) = if self.0 >= TB {
             (self.0 as f64 / TB as f64, "TB")
@@ -167,7 +167,7 @@ impl fmt::Display for ByteSize {
 }
 
 /// Value parser function that supports various formats.
-fn parse_byte_size(s: &str) -> Result<usize, String> {
+fn parse_byte_size(s: &str) -> Result<u64, String> {
     s.parse::<ByteSize>().map(Into::into)
 }
 
@@ -199,7 +199,7 @@ mod tests {
             "4398046511104",
         ])
         .unwrap();
-        assert_eq!(cmd.args.max_size, Some(TERABYTE * 4));
+        assert_eq!(cmd.args.max_size.map(|x| x as u64), Some(TERABYTE * 4));
     }
 
     #[test]
@@ -237,7 +237,7 @@ mod tests {
             "1GB",
         ])
         .unwrap();
-        assert_eq!(cmd.args.max_size, Some(TERABYTE * 2));
+        assert_eq!(cmd.args.max_size.map(|x| x as u64), Some(TERABYTE * 2));
         assert_eq!(cmd.args.growth_step, Some(GIGABYTE));
 
         let cmd = CommandParser::<DatabaseArgs>::try_parse_from([

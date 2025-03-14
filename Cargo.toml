@@ -675,3 +675,4 @@ reqwest = { git = "https://github.com/cristibctr/reqwest", branch = "master" }
 hyper-util = { git = "https://github.com/cristibctr/hyper-util", branch = "master" }
 discv5 = { git = "https://github.com/cristibctr/discv5", rev = "v0.8.1" }
 interprocess = { git = "https://github.com/cristibctr/interprocess", branch = "main" }
+hickory-resolver = { git = "https://github.com/cristibctr/hickory-dns", branch = "v0.25.0-alpha.5" }

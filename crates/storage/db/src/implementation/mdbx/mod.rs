@@ -40,14 +40,14 @@ pub const MEGABYTE: usize = KILOBYTE * 1024;
 /// 1 GB in bytes
 pub const GIGABYTE: usize = MEGABYTE * 1024;
 /// 1 TB in bytes
-pub const TERABYTE: usize = GIGABYTE * 1024;
+pub const TERABYTE: u64 = GIGABYTE as u64 * 1024;
 
 /// MDBX allows up to 32767 readers (`MDBX_READERS_LIMIT`), but we limit it to slightly below that
 const DEFAULT_MAX_READERS: u64 = 32_000;
 
 /// Space that a read-only transaction can occupy until the warning is emitted.
 /// See [`reth_libmdbx::EnvironmentBuilder::set_handle_slow_readers`] for more information.
-const MAX_SAFE_READER_SPACE: usize = 10 * GIGABYTE;
+const MAX_SAFE_READER_SPACE: u64 = 10 * GIGABYTE as u64;
 
 /// Environment used when opening a MDBX environment. RO/RW.
 #[derive(Debug)]
@@ -71,7 +71,7 @@ pub struct DatabaseArguments {
     /// Client version that accesses the database.
     client_version: ClientVersion,
     /// Database geometry settings.
-    geometry: Geometry<Range<usize>>,
+    geometry: Geometry<Range<u64>>,
     /// Database log level. If [None], the default value is used.
     log_level: Option<LogLevel>,
     /// Maximum duration of a read transaction. If [None], the default value is used.
@@ -110,9 +110,10 @@ impl DatabaseArguments {
     pub fn new(client_version: ClientVersion) -> Self {
         Self {
             client_version,
+            //TODO: Revise this potentially unsafe change
             geometry: Geometry {
                 size: Some(0..(4 * TERABYTE)),
-                growth_step: Some(4 * GIGABYTE as isize),
+                growth_step: Some((4_i64 * GIGABYTE as i64) as isize),
                 shrink_threshold: Some(0),
                 page_size: Some(PageSize::Set(default_page_size())),
             },
@@ -125,7 +126,7 @@ impl DatabaseArguments {
     /// Sets the upper size limit of the db environment, the maximum database size in bytes.
     pub const fn with_geometry_max_size(mut self, max_size: Option<usize>) -> Self {
         if let Some(max_size) = max_size {
-            self.geometry.size = Some(0..max_size);
+            self.geometry.size = Some(0..max_size as u64);
         }
         self
     }
@@ -338,7 +339,7 @@ impl DatabaseEnv {
             space: usize,
             retry: std::ffi::c_int,
         ) -> HandleSlowReadersReturnCode {
-            if space > MAX_SAFE_READER_SPACE {
+            if space > MAX_SAFE_READER_SPACE.try_into().unwrap() {
                 let message = if is_current_process(process_id as u32) {
                     "Current process has a long-lived database transaction that grows the database file."
                 } else {

@@ -2216,7 +2216,7 @@ dependencies = [
  "libc",
  "mio 1.0.1",
  "parking_lot 0.12.3",
- "rustix 0.38.44",
+ "rustix",
  "signal-hook",
  "signal-hook-mio",
  "winapi",
@@ -3751,8 +3751,7 @@ dependencies = [
 [[package]]
 name = "hickory-proto"
 version = "0.25.0-alpha.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d00147af6310f4392a31680db52a3ed45a2e0f68eb18e8c3fe5537ecc96d9e2"
+source = "git+https://github.com/cristibctr/hickory-dns?branch=v0.25.0-alpha.5#91f00a5770b6654cc1678956a94a950b999c6578"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -3777,8 +3776,7 @@ dependencies = [
 [[package]]
 name = "hickory-resolver"
 version = "0.25.0-alpha.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5762f69ebdbd4ddb2e975cd24690bf21fe6b2604039189c26acddbc427f12887"
+source = "git+https://github.com/cristibctr/hickory-dns?branch=v0.25.0-alpha.5#91f00a5770b6654cc1678956a94a950b999c6578"
 dependencies = [
  "cfg-if",
  "futures-util",
@@ -4328,7 +4326,7 @@ dependencies = [
 [[package]]
 name = "interprocess"
 version = "2.2.2"
-source = "git+https://github.com/cristibctr/interprocess?branch=main#8e81284e16501da0f1565d410e8a92d1fb9e0385"
+source = "git+https://github.com/cristibctr/interprocess?branch=main#c094bbfe3d571662cd515093cd28dea2fdb3de4a"
 dependencies = [
  "doctest-file",
  "futures-core",
@@ -4701,7 +4699,7 @@ dependencies = [
 [[package]]
 name = "libc"
 version = "0.2.169"
-source = "git+https://github.com/cristibctr/libc-0.2.169?branch=wasix-0.2.169#73c0ca09fb3b69a248c33b19354cfb9a78b685e4"
+source = "git+https://github.com/cristibctr/libc-0.2.169?branch=wasix-0.2.169#b093363b0b5216f33f9211b19228f7bbe503bcb4"
 
 [[package]]
 name = "libloading"
@@ -4829,12 +4827,6 @@ name = "linux-raw-sys"
 version = "0.4.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d26c52dbd32dccf2d10cac7725f8eae5296885fb5703b261f7d0a0739ec807ab"
-
-[[package]]
-name = "linux-raw-sys"
-version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6db9c683daf087dc577b7506e9695b3d556a9f3849903fa28186283afd6809e9"
 
 [[package]]
 name = "litemap"
@@ -5097,7 +5089,7 @@ dependencies = [
 [[package]]
 name = "mio"
 version = "1.0.1"
-source = "git+https://github.com/cristibctr/mio?branch=v1.0.1#110a147bb506d76b74c94d66892b278d13f1c083"
+source = "git+https://github.com/cristibctr/mio?branch=v1.0.1#223e55813ad37911c7f0beb5f7ec778aafa8f9ae"
 dependencies = [
  "libc",
  "log",
@@ -5987,7 +5979,7 @@ dependencies = [
  "hex",
  "lazy_static",
  "procfs-core 0.16.0",
- "rustix 0.38.44",
+ "rustix",
 ]
 
 [[package]]
@@ -5997,7 +5989,7 @@ source = "git+https://github.com/cristibctr/procfs?branch=feat/add-wasm-support#
 dependencies = [
  "bitflags 2.9.0",
  "procfs-core 0.17.0",
- "rustix 0.38.44",
+ "rustix",
 ]
 
 [[package]]
@@ -9999,25 +9991,12 @@ dependencies = [
 [[package]]
 name = "rustix"
 version = "0.38.44"
-source = "git+https://github.com/cristibctr/rustix?branch=feat/add-wasm-support#f5d37aaddd74fe7986381e37be756e08bc564a2f"
+source = "git+https://github.com/cristibctr/rustix?branch=feat/add-wasm-support#f4d49fcd242ba78de55bee20a8118effb8e64567"
 dependencies = [
  "bitflags 2.9.0",
  "errno",
  "libc",
- "linux-raw-sys 0.4.15",
- "windows-sys 0.59.0",
-]
-
-[[package]]
-name = "rustix"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dade4812df5c384711475be5fcd8c162555352945401aed22a35bffeab61f657"
-dependencies = [
- "bitflags 2.9.0",
- "errno",
- "libc",
- "linux-raw-sys 0.9.2",
+ "linux-raw-sys",
  "windows-sys 0.59.0",
 ]
 
@@ -10857,15 +10836,15 @@ checksum = "55937e1799185b12863d447f42597ed69d9928686b8d88a1df17376a097d8369"
 
 [[package]]
 name = "tempfile"
-version = "3.18.0"
+version = "3.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c317e0a526ee6120d8dabad239c8dadca62b24b6f168914bbbc8e2fb1f0e567"
+checksum = "38c246215d7d24f48ae091a2902398798e05d978b24315d6efbc00ede9a8bb91"
 dependencies = [
  "cfg-if",
  "fastrand 2.3.0",
  "getrandom 0.3.1",
  "once_cell",
- "rustix 1.0.1",
+ "rustix",
  "windows-sys 0.59.0",
 ]
 
@@ -11098,7 +11077,7 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 [[package]]
 name = "tokio"
 version = "1.41.1"
-source = "git+https://github.com/cristibctr/tokio-wasix?branch=wasix-1.41.1#54867be67d3ebd6c4973c6b42f5c82158fe4998f"
+source = "git+https://github.com/cristibctr/tokio-wasix?branch=wasix-1.41.1#eb0022ce3b338cbca162f26cd9dc559c89b3ede8"
 dependencies = [
  "backtrace",
  "bytes",
@@ -11115,7 +11094,7 @@ dependencies = [
 [[package]]
 name = "tokio-macros"
 version = "2.4.0"
-source = "git+https://github.com/cristibctr/tokio-wasix?branch=wasix-1.41.1#54867be67d3ebd6c4973c6b42f5c82158fe4998f"
+source = "git+https://github.com/cristibctr/tokio-wasix?branch=wasix-1.41.1#eb0022ce3b338cbca162f26cd9dc559c89b3ede8"
 dependencies = [
  "proc-macro2",
  "quote",
