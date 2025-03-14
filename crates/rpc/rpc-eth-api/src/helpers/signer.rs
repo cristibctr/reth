@@ -11,7 +11,8 @@ use std::result;
 pub type Result<T> = result::Result<T, SignError>;
 
 /// An Ethereum Signer used via RPC.
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 pub trait EthSigner<T>: Send + Sync + DynClone {
     /// Returns the available accounts for this signer.
     fn accounts(&self) -> Vec<Address>;

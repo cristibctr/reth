@@ -13,7 +13,8 @@ use reth_node_api::EngineApiMessageVersion;
 use tracing::error;
 
 /// An extension trait for providers that implement the engine API, to wait for a VALID response.
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 pub trait EngineApiValidWaitExt<N, T>: Send + Sync {
     /// Calls `engine_newPayloadV1` with the given [ExecutionPayloadV1], and waits until the
     /// response is VALID.
@@ -63,7 +64,8 @@ pub trait EngineApiValidWaitExt<N, T>: Send + Sync {
     ) -> TransportResult<ForkchoiceUpdated>;
 }
 
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 impl<T, N, P> EngineApiValidWaitExt<N, T> for P
 where
     N: Network,

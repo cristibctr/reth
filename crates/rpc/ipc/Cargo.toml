@@ -23,7 +23,7 @@ pin-project.workspace = true
 tower.workspace = true
 
 # misc
-jsonrpsee = { workspace = true, features = ["server", "client"] }
+jsonrpsee = { workspace = true, features = ["server", "wasm-client"] }
 serde_json.workspace = true
 tracing.workspace = true
 bytes.workspace = true

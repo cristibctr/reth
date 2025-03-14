@@ -21,7 +21,8 @@ impl OpMinerExtApi {
     }
 }
 
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl MinerApiExtServer for OpMinerExtApi {
     /// Handler for `miner_setMaxDASize` RPC method.
     async fn set_max_da_size(&self, max_tx_size: U64, max_block_size: U64) -> RpcResult<bool> {

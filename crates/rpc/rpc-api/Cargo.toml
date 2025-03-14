@@ -38,7 +38,7 @@ jsonrpsee = { workspace = true, features = ["server", "macros"] }
 
 [features]
 client = [
-    "jsonrpsee/client",
-    "jsonrpsee/async-client",
+    "jsonrpsee/wasm-client",
+    "jsonrpsee/async-wasm-client",
     "reth-rpc-eth-api/client",
 ]

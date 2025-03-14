@@ -97,7 +97,7 @@ reth-provider = { workspace = true, features = ["test-utils"] }
 alloy-consensus.workspace = true
 
 jsonrpsee-types.workspace = true
-jsonrpsee = { workspace = true, features = ["client"] }
+jsonrpsee = { workspace = true, features = ["async-wasm-client"] }
 
 [features]
 js-tracer = ["revm-inspectors/js-tracer", "reth-rpc-eth-types/js-tracer"]

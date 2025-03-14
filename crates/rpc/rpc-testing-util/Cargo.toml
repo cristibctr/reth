@@ -26,7 +26,10 @@ alloy-eips.workspace = true
 futures.workspace = true
 
 # misc
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 jsonrpsee = { workspace = true, features = ["client", "async-client"] }
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+jsonrpsee = { workspace = true, features = ["wasm-client", "async-wasm-client"] }
 serde_json.workspace = true
 
 # assertions

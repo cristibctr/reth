@@ -238,7 +238,8 @@ where
     }
 }
 
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl<Eth> EthFilterApiServer<RpcTransaction<Eth::NetworkTypes>> for EthFilter<Eth>
 where
     Eth: FullEthApiTypes + RpcNodeCoreExt<Provider: BlockIdReader> + 'static,
@@ -651,12 +652,14 @@ where
 }
 
 /// Helper trait for [FullTransactionsReceiver] to erase the `Transaction` type.
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 trait FullTransactionsFilter<T>: fmt::Debug + Send + Sync + Unpin + 'static {
     async fn drain(&self) -> FilterChanges<T>;
 }
 
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl<T, TxCompat> FullTransactionsFilter<TxCompat::Transaction>
     for FullTransactionsReceiver<T, TxCompat>
 where

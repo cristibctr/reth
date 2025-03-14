@@ -5,7 +5,8 @@ use std::fmt::Debug;
 use tokio::sync::oneshot;
 
 /// A helper trait for internal usage to retrieve and resolve payloads.
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 pub trait PayloadStoreExt<T: PayloadTypes>: Debug + Send + Sync + Unpin {
     /// Resolves the payload job and returns the best payload that has been built so far.
     async fn resolve_kind(
@@ -33,7 +34,8 @@ pub trait PayloadStoreExt<T: PayloadTypes>: Debug + Send + Sync + Unpin {
     ) -> Option<Result<T::PayloadBuilderAttributes, PayloadBuilderError>>;
 }
 
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 impl<T: PayloadTypes, P> PayloadStoreExt<T> for P
 where
     P: PayloadBuilder<PayloadType = T>,
@@ -62,7 +64,8 @@ where
 }
 
 /// A type that can request, subscribe to and resolve payloads.
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 pub trait PayloadBuilder: Debug + Send + Sync + Unpin {
     /// The Payload type for the builder.
     type PayloadType: PayloadTypes;

@@ -9,7 +9,8 @@ use reth_rpc_api::MinerApiServer;
 #[derive(Clone, Debug, Default)]
 pub struct MinerApi {}
 
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl MinerApiServer for MinerApi {
     fn set_extra(&self, _record: Bytes) -> RpcResult<bool> {
         Ok(false)

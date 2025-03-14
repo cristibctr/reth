@@ -36,6 +36,7 @@ alloy-rpc-types-engine.workspace = true
 tokio.workspace = true
 tokio-stream.workspace = true
 futures-util.workspace = true
+async-trait.workspace = true
 
 # misc
 eyre.workspace = true

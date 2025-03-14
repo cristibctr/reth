@@ -6,10 +6,11 @@ use interprocess::local_socket::{
     tokio::{prelude::*, RecvHalf, SendHalf},
     GenericFilePath,
 };
-use jsonrpsee::{
-    async_client::{Client, ClientBuilder},
-    core::client::{ReceivedMessage, TransportReceiverT, TransportSenderT},
-};
+#[cfg(not(target_arch = "wasm32"))]
+use jsonrpsee::async_client::{Client, ClientBuilder};
+#[cfg(target_arch = "wasm32")]
+use jsonrpsee::wasm_client::{Client, WasmClientBuilder};
+use jsonrpsee::core::client::{ReceivedMessage, TransportReceiverT, TransportSenderT};
 use std::io;
 use tokio::io::AsyncWriteExt;
 use tokio_util::codec::FramedRead;
@@ -20,7 +21,8 @@ pub(crate) struct Sender {
     inner: SendHalf,
 }
 
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 impl TransportSenderT for Sender {
     type Error = IpcError;
 
@@ -47,7 +49,8 @@ pub(crate) struct Receiver {
     pub(crate) inner: FramedRead<RecvHalf, StreamCodec>,
 }
 
-#[async_trait::async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 impl TransportReceiverT for Receiver {
     type Error = IpcError;
 
@@ -97,16 +100,21 @@ impl IpcClientBuilder {
     /// ```
     pub async fn build(self, name: &str) -> Result<Client, IpcError> {
         let (tx, rx) = IpcTransportClientBuilder::default().build(name).await?;
-        Ok(self.build_with_tokio(tx, rx))
+        Ok(self.build_with_tokio(tx, rx, name))
     }
 
     /// Uses the sender and receiver channels to connect to the socket.
-    pub fn build_with_tokio<S, R>(self, sender: S, receiver: R) -> Client
+    pub fn build_with_tokio<S, R>(self, sender: S, receiver: R, name: &str) -> Client
     where
         S: TransportSenderT + Send,
         R: TransportReceiverT + Send,
     {
-        ClientBuilder::default().build_with_tokio(sender, receiver)
+        #[cfg(target_arch = "wasm32")]
+        async {
+            return WasmClientBuilder::default().build(name).await;
+        };
+        #[cfg(not(target_arch = "wasm32"))]
+        return ClientBuilder::default().build_with_tokio(sender, receiver);
     }
 }
 

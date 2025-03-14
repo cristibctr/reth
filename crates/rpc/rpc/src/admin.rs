@@ -32,7 +32,8 @@ impl<N, ChainSpec> AdminApi<N, ChainSpec> {
     }
 }
 
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 impl<N, ChainSpec> AdminApiServer for AdminApi<N, ChainSpec>
 where
     N: NetworkInfo + Peers + 'static,
