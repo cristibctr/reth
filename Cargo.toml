@@ -569,11 +569,11 @@ discv5 = "0.8.0"
 if-addrs = "0.13"
 
 # rpc
-jsonrpsee = "0.24.9"
-jsonrpsee-core = "0.24.9"
-jsonrpsee-server = "0.24.9"
-jsonrpsee-http-client = "0.24.9"
-jsonrpsee-types = "0.24.9"
+jsonrpsee = "0.24"
+jsonrpsee-core = "0.24"
+jsonrpsee-server = "0.24"
+jsonrpsee-http-client = "0.24"
+jsonrpsee-types = "0.24"
 
 # http
 http = "1.0"
@@ -653,18 +653,17 @@ socket2 = { version = "0.6.0", default-features = false }
 crossterm = { features = ["libc"], default-features = false }
 
 [patch.crates-io]
-c-kzg = {path = "../c-kzg-4844"}
+c-kzg = { git = "https://github.com/cristibctr/c-kzg-4844", branch = "v1.0.3"}
 tokio = { git = "https://github.com/cristibctr/tokio-wasix", branch = "wasix-1.41.1" }
 socket2 = { git = "https://github.com/cristibctr/socket2.git", branch = "v0.6.0" }
-hostname = { path = "../hostname"}
+hostname = { git = "https://github.com/cristibctr/hostname", branch = "master"}
 libc = { git = "https://github.com/cristibctr/libc-0.2.169", branch = "wasix-0.2.169" }
 metrics-process = { git = "https://github.com/cristibctr/rs-metrics-process", branch = "feat/add-wasm-support" }
-rustls-platform-verifier = { version = "=0.5", optional = false, path = "../rustls-platform-verifier/rustls-platform-verifier" }
-jsonrpsee = { git = "https://github.com/cristibctr/jsonrpsee", rev = "v0.24.9" }
-jsonrpsee-core = { git = "https://github.com/cristibctr/jsonrpsee", rev = "v0.24.9" }
-jsonrpsee-server = { git = "https://github.com/cristibctr/jsonrpsee", rev = "v0.24.9" }
-jsonrpsee-http-client = { git = "https://github.com/cristibctr/jsonrpsee", rev = "v0.24.9" }
-jsonrpsee-types = { git = "https://github.com/cristibctr/jsonrpsee", rev = "v0.24.9" }
+jsonrpsee = { git = "https://github.com/cristibctr/jsonrpsee", branch = "v0.24.7-wasix" }
+jsonrpsee-core = { git = "https://github.com/cristibctr/jsonrpsee", branch = "v0.24.7-wasix" }
+jsonrpsee-server = { git = "https://github.com/cristibctr/jsonrpsee", branch = "v0.24.7-wasix" }
+jsonrpsee-http-client = { git = "https://github.com/cristibctr/jsonrpsee", branch = "v0.24.7-wasix" }
+jsonrpsee-types = { git = "https://github.com/cristibctr/jsonrpsee", branch = "v0.24.7-wasix" }
 getrandom = { git = "https://github.com/cristibctr/getrandom", branch = "feat/add-wasm-support-0.3.1" }
 procfs = { git = "https://github.com/cristibctr/procfs", branch = "feat/add-wasm-support" }
 rustix = { git = "https://github.com/cristibctr/rustix", branch = "feat/add-wasm-support" }
@@ -676,3 +675,32 @@ hyper-util = { git = "https://github.com/cristibctr/hyper-util", branch = "maste
 discv5 = { git = "https://github.com/cristibctr/discv5", rev = "v0.8.1" }
 interprocess = { git = "https://github.com/cristibctr/interprocess", branch = "main" }
 hickory-resolver = { git = "https://github.com/cristibctr/hickory-dns", branch = "v0.25.0-alpha.5" }
+futures-utils-wasm = { git = "https://github.com/cristibctr/futures-utils-wasm", branch = "main" }
+rustls-native-certs = { git = "https://github.com/cristibctr/rustls-native-certs", branch = "main"}
+alloy-consensus = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-eips = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-genesis = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-json-rpc = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-network = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-network-primitives = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-node-bindings = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-provider = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-pubsub = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-client = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-admin = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-anvil = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-beacon = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-debug = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-engine = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-eth = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-mev = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-trace = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-rpc-types-txpool = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-serde = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-signer = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-signer-local = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-transport = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-transport-http = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-transport-ipc = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
+alloy-transport-ws = { git = "https://github.com/cristibctr/alloy", branch = "v0.9.2-wasix"}
