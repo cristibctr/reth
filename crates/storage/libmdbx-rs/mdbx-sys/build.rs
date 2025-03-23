@@ -12,36 +12,36 @@ fn main() {
     let bindings = PathBuf::from(std::env::var("OUT_DIR").unwrap()).join("bindings.rs");
     generate_bindings(&mdbx, &bindings);
 
-    // let mut cc = cc::Build::new();
-    // cc.flag_if_supported("-Wno-unused-parameter").flag_if_supported("-Wuninitialized");
-    //
-    // if env::var("CARGO_CFG_TARGET_OS").unwrap() != "linux" {
-    //     cc.flag_if_supported("-Wbad-function-cast");
-    // }
-    //
-    // let flags = format!("{:?}", cc.get_compiler().cflags_env());
-    // cc.define("MDBX_BUILD_FLAGS", flags.as_str()).define("MDBX_TXN_CHECKOWNER", "0");
-    //
-    // // Enable debugging on debug builds
-    // #[cfg(debug_assertions)]
-    // cc.define("MDBX_DEBUG", "1").define("MDBX_ENABLE_PROFGC", "1");
-    //
-    // // Disables debug logging on optimized builds
-    // #[cfg(not(debug_assertions))]
-    // cc.define("MDBX_DEBUG", "0").define("NDEBUG", None);
-    //
-    // // Propagate `-C target-cpu=native`
-    // let rustflags = env::var("CARGO_ENCODED_RUSTFLAGS").unwrap();
-    // if rustflags.contains("target-cpu=native") &&
-    //     env::var("CARGO_CFG_TARGET_ENV").unwrap() != "msvc"
-    // {
-    //     cc.flag("-march=native");
-    // }
-    //
-    // cc.flag("-D_WASI_EMULATED_MMAN");
-    // cc.flag("-D_WASI_EMULATED_PROCESS_CLOCKS");
-    // cc.flag("-D__linux__");
-    // cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
+    let mut cc = cc::Build::new();
+    cc.flag_if_supported("-Wno-unused-parameter").flag_if_supported("-Wuninitialized");
+
+    if env::var("CARGO_CFG_TARGET_OS").unwrap() != "linux" {
+        cc.flag_if_supported("-Wbad-function-cast");
+    }
+
+    let flags = format!("{:?}", cc.get_compiler().cflags_env());
+    cc.define("MDBX_BUILD_FLAGS", flags.as_str()).define("MDBX_TXN_CHECKOWNER", "0");
+
+    // Enable debugging on debug builds
+    #[cfg(debug_assertions)]
+    cc.define("MDBX_DEBUG", "1").define("MDBX_ENABLE_PROFGC", "1");
+
+    // Disables debug logging on optimized builds
+    #[cfg(not(debug_assertions))]
+    cc.define("MDBX_DEBUG", "0").define("NDEBUG", None);
+
+    // Propagate `-C target-cpu=native`
+    let rustflags = env::var("CARGO_ENCODED_RUSTFLAGS").unwrap();
+    if rustflags.contains("target-cpu=native") &&
+        env::var("CARGO_CFG_TARGET_ENV").unwrap() != "msvc"
+    {
+        cc.flag("-march=native");
+    }
+
+    cc.flag("-D_WASI_EMULATED_MMAN");
+    cc.flag("-D_WASI_EMULATED_PROCESS_CLOCKS");
+    cc.flag("-D__linux__");
+    cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
     // println!("cargo:rustc-link-lib=wasi-emulated-mman");
     // println!("cargo:rustc-link-lib=wasi-emulated-process-clocks");
 
