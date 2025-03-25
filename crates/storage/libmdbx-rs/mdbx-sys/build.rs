@@ -41,6 +41,7 @@ fn main() {
     cc.flag("-D_WASI_EMULATED_MMAN");
     cc.flag("-D_WASI_EMULATED_PROCESS_CLOCKS");
     cc.flag("-D__linux__");
+    cc.flag("-pthread");
     cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
     // println!("cargo:rustc-link-lib=wasi-emulated-mman");
     // println!("cargo:rustc-link-lib=wasi-emulated-process-clocks");
