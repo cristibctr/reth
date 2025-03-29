@@ -42,9 +42,12 @@ fn main() {
     cc.flag("-D_WASI_EMULATED_PROCESS_CLOCKS");
     cc.flag("-D__linux__");
     cc.flag("-pthread");
+    cc.compiler("/home/x33f3/wasi-sdk-25.0-x86_64-linux/bin/clang");
+    cc.flag("--sysroot=/home/x33f3/wasix-sysroot2025-local");
     cc.file(mdbx.join("mdbx.c")).compile("libmdbx.a");
-    // println!("cargo:rustc-link-lib=wasi-emulated-mman");
-    // println!("cargo:rustc-link-lib=wasi-emulated-process-clocks");
+
+    println!("cargo:rustc-link-search=/home/x33f3/wasix-sysroot2025-local/lib/wasm32-wasi");
+    println!("cargo:rustc-link-lib=wasi-emulated-mman");
 
 }
 
@@ -113,7 +116,7 @@ fn generate_bindings(mdbx: &Path, out_file: &Path) {
         .prepend_enum_name(false)
         .generate_comments(false)
         .formatter(Formatter::Rustfmt)
-        .clang_arg("--sysroot=/home/x33f3/wasix-sysroot2025")
+        .clang_arg("--sysroot=/home/x33f3/wasix-sysroot2025-local")
         .clang_arg("-DLIBMDBX_EXPORTS")
         .generate()
         .expect("Unable to generate bindings");
