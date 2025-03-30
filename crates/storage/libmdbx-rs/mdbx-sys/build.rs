@@ -48,6 +48,10 @@ fn main() {
 
     println!("cargo:rustc-link-search=/home/x33f3/wasix-sysroot2025-local/lib/wasm32-wasi");
     println!("cargo:rustc-link-lib=wasi-emulated-mman");
+    println!("cargo:rustc-link-lib=wasi-emulated-mman");
+    println!("cargo:rustc-link-lib=wasi-emulated-statfs");
+    println!("cargo:rustc-link-lib=wasi-emulated-madvise");
+    println!("cargo:rustc-link-lib=wasi-emulated-mincore");
 
 }
 
